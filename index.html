@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#007ab5">
+  <meta name="description" content="Aplikasi Price List Setia Abadi">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Price List Setia Abadi</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <style>
+    :root { color-scheme: light; --blue:#007ab5; --bg:#f3f7fa; }
+    * { box-sizing:border-box; }
+    html, body { margin:0; width:100%; height:100%; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:var(--bg); }
+    body { display:flex; flex-direction:column; overflow:hidden; }
+    header { min-height:54px; padding:10px 14px; padding-top:max(10px, env(safe-area-inset-top)); display:flex; align-items:center; gap:10px; background:var(--blue); color:white; box-shadow:0 2px 8px #0002; z-index:2; }
+    .mark { width:32px; height:32px; border-radius:9px; background:#fff; color:var(--blue); display:grid; place-items:center; font-weight:900; }
+    .brand { flex:1; min-width:0; font-size:15px; font-weight:750; line-height:1.2; }
+    .sub { font-size:11px; font-weight:500; opacity:.85; margin-top:3px; }
+    .open { border:1px solid #ffffffa8; background:#ffffff18; color:white; border-radius:9px; padding:8px 10px; font-size:12px; font-weight:650; white-space:nowrap; }
+    main { position:relative; flex:1; min-height:0; }
+    iframe { width:100%; height:100%; border:0; background:white; }
+    #fallback { display:none; position:absolute; inset:0; padding:28px 22px; background:white; color:#243746; overflow:auto; }
+    #fallback h2 { font-size:20px; }
+    #fallback p { line-height:1.55; }
+    .launch { display:inline-block; margin-top:10px; padding:12px 16px; border-radius:10px; color:white; background:var(--blue); text-decoration:none; font-weight:700; }
+    footer { font-size:10px; color:#526575; text-align:center; padding:5px 8px max(5px,env(safe-area-inset-bottom)); background:#eef3f6; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="mark">SA</div>
+    <div class="brand">Price List Setia Abadi<div class="sub">Katalog harga produk</div></div>
+    <button class="open" id="openApp" type="button">Buka penuh ↗</button>
+  </header>
+  <main>
+    <iframe id="appFrame" title="Price List Setia Abadi" src="https://script.google.com/macros/s/AKfycbw4q5jWz0KRv-AXDScNINqPzRXrKi3cnTrCf0KhxdppfdzQ1a2XBR_uuljB_TpSAhKV/exec" allow="clipboard-read; clipboard-write" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <section id="fallback">
+      <h2>Aplikasi tidak dapat ditampilkan di dalam bingkai</h2>
+      <p>Google Apps Script atau setelan akses mungkin membatasi tampilan tersemat. Gunakan tombol di bawah untuk membuka aplikasi secara langsung. Fitur PWA tetap menyediakan ikon di layar utama.</p>
+      <a class="launch" id="launchDirect" href="https://script.google.com/macros/s/AKfycbw4q5jWz0KRv-AXDScNINqPzRXrKi3cnTrCf0KhxdppfdzQ1a2XBR_uuljB_TpSAhKV/exec" target="_blank" rel="noopener">Buka aplikasi langsung</a>
+    </section>
+  </main>
+  <footer>Memerlukan koneksi internet untuk memuat data produk.</footer>
+  <script>
+    const APP_URL = 'https://script.google.com/macros/s/AKfycbw4q5jWz0KRv-AXDScNINqPzRXrKi3cnTrCf0KhxdppfdzQ1a2XBR_uuljB_TpSAhKV/exec';
+    document.getElementById('openApp').addEventListener('click', () => window.open(APP_URL, '_blank', 'noopener'));
+    // A timeout only reveals a fallback; it cannot reliably detect cross-origin iframe errors.
+    window.setTimeout(() => {
+      const frame = document.getElementById('appFrame');
+      try {
+        if (!frame.contentWindow || frame.contentDocument === null) {
+          document.getElementById('fallback').style.display = 'block';
+        }
+      } catch (e) {
+        // Cross-origin access is expected; do not treat it alone as a failure.
+      }
+    }, 7000);
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(console.error));
+    }
+  </script>
+</body>
+</html>
